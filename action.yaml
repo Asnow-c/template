@@ -21,7 +21,8 @@ runs:
           uses: actions/setup-node@v3
           with:
               node-version: ${{ inputs.nodev }}
-              cache: "pnpm"
+              registry-url: https://registry.npmjs.org
+              cache: pnpm
         - shell: bash
           run: pnpm install
           if: ${{ inputs.run_install }}
