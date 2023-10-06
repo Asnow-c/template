@@ -9,6 +9,9 @@ inputs:
         required: true
     run_install:
         description: 是否运行pnpm install
+    ignore_git_file_mode:
+        description: 忽略 git 的 file mode 变化
+        default: "true"
 runs:
     using: "composite"
     steps:
@@ -23,6 +26,9 @@ runs:
               node-version: ${{ inputs.nodev }}
               registry-url: https://registry.npmjs.org
               cache: pnpm
+        - shell: bash
+          if: ${{ inputs.ignore_git_file_mode == 'true' }}
+          run: git config core.filemode false
         - shell: bash
           run: pnpm install
           if: ${{ inputs.run_install }}
