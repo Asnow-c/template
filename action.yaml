@@ -1,22 +1,15 @@
-name: "branches dev"
+name: "setup ssh"
 description: "设置分支和pnpm开发环境"
 inputs:
-    pnpmv:
-        description: pnpm 版本
-        required: true
-    nodev:
-        description: node 版本
+    private_key:
+        description: ssh 私钥
         required: true
 runs:
     using: "composite"
     steps:
-        - uses: actions/checkout@v3
-        - name: Use pnpm 8
-          uses: pnpm/action-setup@v2
-          with:
-              version: ${{ inputs.pnpmv }}
-        - name: Use Node.js v20
-          uses: actions/setup-node@v3
-          with:
-              node-version: ${{ inputs.nodev }}
-              cache: "pnpm"
+        - shell: bash
+          name: set private key
+          run: |
+              mkdir -p ~/.ssh/
+              echo "${{ inputs.private_key }}" > ~/.ssh/id_rsa
+              chmod 600 ~/.ssh/id_rsa
